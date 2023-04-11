@@ -1,4 +1,3 @@
-import WrappedWallet from "./WrappedWallet";
 import {
     WalletProvider,
     useWallet,
@@ -8,10 +7,10 @@ import {
     WalletModalProvider,
     WalletModalButton,
 } from "@solana/wallet-adapter-react-ui";
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import React, { useEffect, useState } from "react";
 import { ConnectionProvider } from "@solana/wallet-adapter-react";
 import SPLTokenService from "./SPLTokenService";
+import WrappedWallet from "./WrappedWallet";
 
 function AppContent() {
     const { wallet, connected } = useWallet();
@@ -20,8 +19,7 @@ function AppContent() {
 
     useEffect(() => {
         if (connected) {
-            const wrappedWallet = new WrappedWallet(wallet);
-            setTokenService(new SPLTokenService(wrappedWallet));
+            setTokenService(new SPLTokenService(new WrappedWallet(wallet)));
             setIsWalletConnected(true);
         } else {
             setTokenService(null);
